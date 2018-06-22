@@ -48,133 +48,123 @@ public class MeditateModel extends BaseModel {
 
     public void allDataLoaded(final PublishSubject<List<MainVO>> publishSubject) {
 //        meditateDateAgent.loadCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN);
-        meditateAPI.getCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN)
-                .subscribeOn(Schedulers.io())
-                .doOnNext(new Consumer<GetCurrentProgramResponse>() {
-                    @Override
-                    public void accept(GetCurrentProgramResponse getCurrentProgramResponse) throws Exception {
-                        mainVOList.add(getCurrentProgramResponse.getCurrentProgram());
-                        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
-                                .subscribeOn(Schedulers.io())
-                                .doOnNext(new Consumer<GetCategoriesProgramsResponse>() {
-                                    @Override
-                                    public void accept(GetCategoriesProgramsResponse getCategoriesProgramsResponse) throws Exception {
-                                        mainVOList.addAll(getCategoriesProgramsResponse.getCategoriesPrograms());
-                                        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Observer<GetTopicsResponse>() {
-                                                    @Override
-                                                    public void onSubscribe(Disposable d) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onNext(GetTopicsResponse value) {
-                                                        mainVOList.addAll(value.getTopics());
-                                                        publishSubject.onNext(mainVOList);
-                                                    }
-
-                                                    @Override
-                                                    public void onError(Throwable e) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onComplete() {
-
-                                                    }
-                                                });
-                                    }
-                                });
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-//                .flatMap()
-//                .doOnSuccess(dto1 -> {
-//
-//                })
-//                .flatMap(dto1 -> api.getDto2())
-//                .doOnSuccess(dto2 -> {/*do something with dto2*/})
-//                .flatMap(dto2 -> api.getDto3())
-//                .doOnSuccess(dto3 -> {/*do something with dto3*/})
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe()
 //        meditateAPI.getCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN)
 //                .subscribeOn(Schedulers.io())
+//                .doOnNext(new Consumer<GetCurrentProgramResponse>() {
+//                    @Override
+//                    public void accept(GetCurrentProgramResponse getCurrentProgramResponse) throws Exception {
+//                        mainVOList.add(getCurrentProgramResponse.getCurrentProgram());
+//                        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
+//                                .subscribeOn(Schedulers.io())
+//                                .doOnNext(new Consumer<GetCategoriesProgramsResponse>() {
+//                                    @Override
+//                                    public void accept(GetCategoriesProgramsResponse getCategoriesProgramsResponse) throws Exception {
+//                                        mainVOList.addAll(getCategoriesProgramsResponse.getCategoriesPrograms());
+//                                        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
+//                                                .subscribeOn(Schedulers.io())
+//                                                .observeOn(AndroidSchedulers.mainThread())
+//                                                .subscribe(new Observer<GetTopicsResponse>() {
+//                                                    @Override
+//                                                    public void onSubscribe(Disposable d) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onNext(GetTopicsResponse value) {
+//                                                        mainVOList.addAll(value.getTopics());
+//                                                        publishSubject.onNext(mainVOList);
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onError(Throwable e) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onComplete() {
+//
+//                                                    }
+//                                                });
+//                                    }
+//                                });
+//                    }
+//                })
 //                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<GetCurrentProgramResponse>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(GetCurrentProgramResponse value) {
-//                        mainVOList.add(value.getCurrentProgram());
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<GetCategoriesProgramsResponse>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(GetCategoriesProgramsResponse value) {
-//                        mainVOList.addAll(value.getCategoriesPrograms());
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<GetTopicsResponse>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(GetTopicsResponse value) {
-//                        mainVOList.addAll(value.getTopics());
-//                        publishSubject.onNext(mainVOList);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
+//                .subscribe();
+
+        meditateAPI.getCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetCurrentProgramResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetCurrentProgramResponse value) {
+                        mainVOList.add(value.getCurrentProgram());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetCategoriesProgramsResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetCategoriesProgramsResponse value) {
+                        mainVOList.addAll(value.getCategoriesPrograms());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetTopicsResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetTopicsResponse value) {
+                        mainVOList.addAll(value.getTopics());
+                        publishSubject.onNext(mainVOList);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 //    @Subscribe(threadMode = ThreadMode.BACKGROUND)
