@@ -14,10 +14,11 @@ import com.aceplus.padc_poc_one.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
@@ -35,7 +36,6 @@ public class MeditateModel extends BaseModel {
 
     private MeditateModel() {
 //        EventBus.getDefault().register(this);
-        mainVOList = new ArrayList<>();
         meditateDateAgent = MeditateDataAgentImpl.getInstance();
     }
 
@@ -47,101 +47,23 @@ public class MeditateModel extends BaseModel {
     }
 
     public void allDataLoaded(final PublishSubject<List<MainVO>> publishSubject) {
-//        meditateDateAgent.loadCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN);
-//        meditateAPI.getCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN)
-//                .subscribeOn(Schedulers.io())
-//                .doOnNext(new Consumer<GetCurrentProgramResponse>() {
-//                    @Override
-//                    public void accept(GetCurrentProgramResponse getCurrentProgramResponse) throws Exception {
-//                        mainVOList.add(getCurrentProgramResponse.getCurrentProgram());
-//                        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
-//                                .subscribeOn(Schedulers.io())
-//                                .doOnNext(new Consumer<GetCategoriesProgramsResponse>() {
-//                                    @Override
-//                                    public void accept(GetCategoriesProgramsResponse getCategoriesProgramsResponse) throws Exception {
-//                                        mainVOList.addAll(getCategoriesProgramsResponse.getCategoriesPrograms());
-//                                        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
-//                                                .subscribeOn(Schedulers.io())
-//                                                .observeOn(AndroidSchedulers.mainThread())
-//                                                .subscribe(new Observer<GetTopicsResponse>() {
-//                                                    @Override
-//                                                    public void onSubscribe(Disposable d) {
-//
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onNext(GetTopicsResponse value) {
-//                                                        mainVOList.addAll(value.getTopics());
-//                                                        publishSubject.onNext(mainVOList);
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onError(Throwable e) {
-//
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onComplete() {
-//
-//                                                    }
-//                                                });
-//                                    }
-//                                });
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe();
-
+        mainVOList = new ArrayList<>();
         meditateAPI.getCurrentProgram(pageIndex, AppConstants.ACCESS_TOKEN)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GetCurrentProgramResponse>() {
+                .flatMap(new Function<GetCurrentProgramResponse, ObservableSource<GetCategoriesProgramsResponse>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
+                    public ObservableSource<GetCategoriesProgramsResponse> apply(GetCurrentProgramResponse currentProgramResponse) throws Exception {
+                        mainVOList.add(currentProgramResponse.getCurrentProgram());
+                        return meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN);
                     }
-
+                })
+                .flatMap(new Function<GetCategoriesProgramsResponse, ObservableSource<GetTopicsResponse>>() {
                     @Override
-                    public void onNext(GetCurrentProgramResponse value) {
-                        mainVOList.add(value.getCurrentProgram());
+                    public ObservableSource<GetTopicsResponse> apply(GetCategoriesProgramsResponse getCategoriesProgramsResponse) throws Exception {
+                        mainVOList.addAll(getCategoriesProgramsResponse.getCategoriesPrograms());
+                        return meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN);
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        meditateAPI.getCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GetCategoriesProgramsResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(GetCategoriesProgramsResponse value) {
-                        mainVOList.addAll(value.getCategoriesPrograms());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        meditateAPI.getTopics(pageIndex, AppConstants.ACCESS_TOKEN)
-                .subscribeOn(Schedulers.io())
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetTopicsResponse>() {
                     @Override
@@ -166,30 +88,6 @@ public class MeditateModel extends BaseModel {
                     }
                 });
     }
-
-//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-//    public void onCurrentProgramLoaded(RestApiEvents.CurrentProgramDataLoadedEvent event) {
-//        mainVOList.add(event.getCurrentProgramVO());
-//        Log.e("mainvo list size", mainVOList.size() + "");
-//        meditateDateAgent.loadCategoriesPrograms(pageIndex, AppConstants.ACCESS_TOKEN);
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-//    public void onCategoriesProgramsDataLoaded(RestApiEvents.CategoriesProgramsDataLoadedEvent event) {
-//        mainVOList.addAll(event.getCategoriesProgramsVOList());
-//        Log.e("mainvo list size", mainVOList.size() + "");
-//        mainVOList.add(new SingleVO("All Topics"));
-//        Log.e("mainvo list size", mainVOList.size() + "");
-//        meditateDateAgent.loadTopics(pageIndex, AppConstants.ACCESS_TOKEN);
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-//    public void onTopicsDataLoaded(RestApiEvents.TopicsDataLoadedEvent event) {
-//        mainVOList.addAll(event.getTopicVOList());
-//        Log.e("mainvo list size", mainVOList.size() + "");
-//        RestApiEvents.AllDataLoadedEvent allDataLoadedEvent = new RestApiEvents.AllDataLoadedEvent(mainVOList);
-//        EventBus.getDefault().post(allDataLoadedEvent);
-//    }
 
     public List<MainVO> getMainVOList() {
         if (mainVOList.isEmpty()) {

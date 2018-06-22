@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.aceplus.padc_poc_one.R;
 import com.aceplus.padc_poc_one.adapter.RecyclerViewAdapter;
 import com.aceplus.padc_poc_one.data.vo.MainVO;
+import com.aceplus.padc_poc_one.data.vo.TopicVO;
 import com.aceplus.padc_poc_one.mvp.presenter.SeriesPresenter;
 import com.aceplus.padc_poc_one.mvp.view.SeriesView;
 import com.aceplus.padc_poc_one.ui.activity.DetailShowActivity;
@@ -104,6 +105,12 @@ public class MeditateSeriesFragment extends Fragment implements SeriesView {
         Intent intent = DetailShowActivity.newIntentProgramInCategoryId(getContext(), categoryId, categoryItemId);
         startActivity(intent);
     }
+
+//    @Override
+//    public void onLaunchDetailProgram(TopicVO topicVO) {
+//        Intent intent = DetailShowActivity.newIntentTopic(getContext(), topicVO.getTopicName(), topicVO.getTopicDesc());
+//        startActivity(intent);
+//    }
 
     @Override
     public void displayErrorMessage(String message) {

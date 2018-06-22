@@ -43,6 +43,9 @@ public class DetailShowActivity extends AppCompatActivity implements DetailProgr
     private static String IE_CATEGORY_ITEM_ID = "categoryItemId";
     private static String IE_CURRENT_VO = "currentVO";
     private static String IE_CATEGORY_VO = "categoriesVO";
+    private static String IE_TOPIC_VO = "topicVO";
+    private static String IE_TOPIC_NAME = "topicName";
+    private static String IE_TOPIC_DESP = "topicDesp";
 
     public static Intent newIntentCurrentProgram(Context context) {
         Intent intent = new Intent(context, DetailShowActivity.class);
@@ -57,6 +60,14 @@ public class DetailShowActivity extends AppCompatActivity implements DetailProgr
         intent.putExtra(IE_CATEGORY_ITEM_ID, categoryItemId);
         return intent;
     }
+
+//    public static Intent newIntentTopic(Context context, String topicName, String topicDesc) {
+//        Intent intent = new Intent(context, DetailShowActivity.class);
+//        intent.putExtra(IE_VO, IE_TOPIC_VO);
+//        intent.putExtra(IE_TOPIC_NAME, topicName);
+//        intent.putExtra(IE_TOPIC_DESP, topicDesc);
+//        return intent;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,4 +113,6 @@ public class DetailShowActivity extends AppCompatActivity implements DetailProgr
             sessionTitle.setVisibility(View.GONE);
         }
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.aceplus.padc_poc_one.mvp.presenter;
 
 import com.aceplus.padc_poc_one.data.model.MeditateModel;
 import com.aceplus.padc_poc_one.data.vo.MainVO;
+import com.aceplus.padc_poc_one.data.vo.TopicVO;
 import com.aceplus.padc_poc_one.delegates.MeditateSeriesDelegate;
 import com.aceplus.padc_poc_one.mvp.view.SeriesView;
 
@@ -64,6 +65,11 @@ public class SeriesPresenter extends BasePresenter<SeriesView> implements Medita
     public void onListItemTap(String categoryId, String categoryItemId) {
         mView.onLaunchDetailProgram(categoryId, categoryItemId);
     }
+
+//    @Override
+//    public void onTopicItemTap(TopicVO topicVO) {
+//        mView.onLaunchDetailProgram(topicVO);
+//    }
 
 
 }

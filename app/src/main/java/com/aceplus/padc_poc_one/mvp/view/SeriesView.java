@@ -1,7 +1,5 @@
 package com.aceplus.padc_poc_one.mvp.view;
 
-import com.aceplus.padc_poc_one.data.vo.CategoriesProgramsVO;
-import com.aceplus.padc_poc_one.data.vo.CurrentProgramVO;
 import com.aceplus.padc_poc_one.data.vo.MainVO;
 import com.aceplus.padc_poc_one.data.vo.TopicVO;
 
@@ -19,11 +17,6 @@ public interface SeriesView extends BaseView {
 
     void onLaunchDetailProgram(String categoryId, String categoryItemId);
 
-//    void onLaunchDetailProgram(String id);
+//    void onLaunchDetailProgram(TopicVO topicVO);
 
-//    void displayCurrentProgram(CurrentProgramVO currentProgramVO);
-//
-//    void displayCategories(CategoriesProgramsVO categoriesProgramsVO);
-//
-//    void displayTopics(TopicVO topicVO);
 }
